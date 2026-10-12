@@ -92,6 +92,9 @@ export default function Header({ search, onSearch }) {
                   <p className="user-name">Xin chào, {user.name}</p>
                   <Link to="/me" onClick={() => setShowUserMenu(false)}>Tài khoản của tôi</Link>
                   <Link to="/orders" onClick={() => setShowUserMenu(false)}>Đơn hàng của tôi</Link>
+                  {user.isAdmin && (
+                    <Link to="/admin" onClick={() => setShowUserMenu(false)}>⚙️ Quản trị ShopTun</Link>
+                  )}
                   <button type="button" className="logout-menu-btn" onClick={handleLogout}>Đăng xuất</button>
                 </div>
               )}

@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { products } from '../data/products.js'
+import { useStore } from './StoreContext.jsx'
 
 const WishlistContext = createContext(null)
 
 export function WishlistProvider({ children }) {
+  const { products } = useStore()
   const [ids, setIds] = useState(() => {
     try { return JSON.parse(localStorage.getItem('sa_wishlist') || '[]') }
     catch { return [] }

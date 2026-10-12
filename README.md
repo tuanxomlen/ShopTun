@@ -116,3 +116,28 @@ docker run -d --name shoptun -p 8080:80 <your-dockerhub-username>/shoptun:latest
 - `nginx.conf` có `try_files ... /index.html` để React Router hoạt động đúng khi
   refresh trang ở URL con (vd `/cart`, `/checkout`, `/product/3`).
 - Font chữ **Be Vietnam Pro** tải qua Google Fonts trong `index.html`.
+
+
+## ShopTun Admin
+
+Dự án hiện có trang quản trị tại `/admin`.
+
+Tài khoản admin demo:
+- Email: `admin@shoptun.local`
+- Mật khẩu: `admin123`
+
+Admin có thể:
+- Xem danh sách sản phẩm.
+- Thêm / sửa / xóa sản phẩm.
+- Điều chỉnh giá bán, giá gốc và số lượng tồn kho.
+- Quản lý user và cấp/hạ quyền admin.
+- Thêm / sửa / xóa / bật/tắt voucher.
+- Xem thống kê nhanh sản phẩm, tồn kho, user, voucher và đơn hàng.
+
+Dữ liệu quản trị của phiên bản demo được lưu trong `localStorage` với các key:
+- `sa_products`
+- `sa_users`
+- `sa_vouchers`
+- `sa_orders`
+
+Đây là phiên bản frontend demo; nếu triển khai thật cần chuyển phần quản trị sang backend + database và hash mật khẩu.

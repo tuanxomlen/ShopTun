@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { products } from '../data/products.js'
+import { useStore } from './StoreContext.jsx'
 
 const CartContext = createContext(null)
 
@@ -9,6 +9,7 @@ const lineKey = (id, opt = {}) => `${id}::${opt.color || ''}::${opt.size || ''}`
 // (opt.color/opt.size are the variant choices passed in from the product page)
 
 export function CartProvider({ children }) {
+  const { products } = useStore()
   const [lines, setLines] = useState(() => {
     try { return JSON.parse(localStorage.getItem('sa_cart_v2') || '{}') }
     catch { return {} }

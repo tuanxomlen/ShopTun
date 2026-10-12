@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { findProduct, discountPercent } from '../data/products.js'
+import { discountPercent } from '../data/products.js'
+import { useStore } from '../context/StoreContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useWishlist } from '../context/WishlistContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
@@ -8,12 +9,13 @@ import { formatVnd, formatSold } from '../utils.js'
 import Stars from '../components/Stars.jsx'
 
 export default function ProductDetail() {
+  const { products } = useStore()
   const { id } = useParams()
   const navigate = useNavigate()
   const { addToCart } = useCart()
   const { isWished, toggleWish } = useWishlist()
   const { showToast } = useToast()
-  const product = findProduct(id)
+  const product = products.find((p) => p.id === Number(id))
 
   const [color, setColor] = useState(product?.variants.colors[0])
   const [size, setSize] = useState(product?.variants.sizes[0])
@@ -32,12 +34,16 @@ export default function ProductDetail() {
   const wished = isWished(product.id)
 
   const handleAdd = () => {
-    addToCart(product.id, qty, { color, size })
+    const safeQty = Math.min(qty, Number(product.stock || 0))
+    if (safeQty <= 0) return
+    addToCart(product.id, safeQty, { color, size })
     showToast(`Đã thêm "${product.name}" vào giỏ hàng`)
   }
 
   const handleBuyNow = () => {
-    addToCart(product.id, qty, { color, size })
+    const safeQty = Math.min(qty, Number(product.stock || 0))
+    if (safeQty <= 0) return
+    addToCart(product.id, safeQty, { color, size })
     navigate('/cart')
   }
 

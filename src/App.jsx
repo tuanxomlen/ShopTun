@@ -19,6 +19,8 @@ import OrderSuccess from './pages/OrderSuccess.jsx'
 import Sales from './pages/Sales.jsx'
 import Notifications from './pages/Notifications.jsx'
 import Profile from './pages/Profile.jsx'
+import Admin from './pages/Admin.jsx'
+import { StoreProvider } from './context/StoreContext.jsx'
 
 function Shell() {
   const [search, setSearch] = useState('')
@@ -39,6 +41,7 @@ function Shell() {
           <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
           <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
           <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
       <footer className="footer">
@@ -71,7 +74,8 @@ function Shell() {
 export default function App() {
   return (
     <AuthProvider>
-      <WishlistProvider>
+      <StoreProvider>
+        <WishlistProvider>
         <CartProvider>
           <ToastProvider>
             <BrowserRouter>
@@ -79,7 +83,8 @@ export default function App() {
             </BrowserRouter>
           </ToastProvider>
         </CartProvider>
-      </WishlistProvider>
+        </WishlistProvider>
+      </StoreProvider>
     </AuthProvider>
   )
 }

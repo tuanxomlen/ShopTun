@@ -2,10 +2,21 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
-import { applyVoucher } from '../data/vouchers.js'
+import { useStore } from '../context/StoreContext.jsx'
 import { formatVnd } from '../utils.js'
 
 export default function Checkout() {
+  const { vouchers } = useStore()
+  const applyVoucher = (code, total) => {
+    const v = vouchers[code?.trim().toUpperCase()]
+    if (!v || v.active === false) return { ok: false, message: 'Mã giảm giá không hợp lệ.' }
+    if (v.minTotal && total < v.minTotal) {
+      return { ok: false, message: `Đơn hàng cần tối thiểu ${v.minTotal.toLocaleString('vi-VN')}₫ để dùng mã này.` }
+    }
+    const discount = v.type === 'percent' ? Math.round(total * (v.value / 100)) : v.value
+    return { ok: true, code: code.trim().toUpperCase(), label: v.label, discount: Math.min(discount, total) }
+  }
+
   const { items, totalPrice, clearCart } = useCart()
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -43,6 +54,9 @@ export default function Checkout() {
       voucherCode: voucher?.code || null,
       total: finalTotal,
       customer: form,
+      userEmail: user?.email || null,
+      userName: user?.name || form.fullName,
+      status: 'Đang xử lý',
       createdAt: new Date().toISOString(),
     }
 

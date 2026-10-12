@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react'
+import { useStore } from '../context/StoreContext.jsx'
 import { useSearchParams } from 'react-router-dom'
-import { products, categories, flashSaleIds } from '../data/products.js'
+import { categories, flashSaleIds } from '../data/products.js'
 import ProductCard from '../components/ProductCard.jsx'
 import CountdownTimer from '../components/CountdownTimer.jsx'
 
 export default function Home({ search }) {
+  const { products } = useStore()
   const [params, setParams] = useSearchParams()
   const activeCat = params.get('cat') || ''
   const [sort, setSort] = useState('popular')
